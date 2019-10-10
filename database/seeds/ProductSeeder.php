@@ -3,28 +3,21 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 use App\Models\Product;
+use Faker\Factory as Faker;
 
 class ProductSeeder extends Seeder
 {
     public function run()
     {
-		$data = [
-			[
-				'uuid' => Str::uuid()->toString(),
-				'name' => 'Pecel',
-				'description' => 
-				'Makana Khas Jawa timur yang terdiri dari sayur dan bumbu kancang',
-				'price' => 50000,
-			],
-			[
-				'uuid' => Str::uuid()->toString(),
-				'name' => 'Peuyeum',
-				'description' => 
-				'Terbuat dari singkong yang difermentasi',
-				'price' => 120000,
-			],
-		];
+		$faker = Faker::create('id_ID');
 
-		Product::insert($data);
+		for ($i = 0; $i < 15; $i++) {
+			Product::create([
+				'uuid' => Str::uuid()->toString(),
+				'price' => $faker->randomNumber(4),
+				'name' => $faker->colorName,
+				'description' => $faker->text,
+			]);
+		}
     }
 }

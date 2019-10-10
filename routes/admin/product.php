@@ -15,6 +15,8 @@ Route::prefix('admin/product')
 	->name('product.')
 	->namespace('Admin')
 	->group(function() {
+		Route::get('datatable', 'ProductController@datatable')
+			->name('datatable');
 		Route::resource('', 'ProductController');
 	});
 

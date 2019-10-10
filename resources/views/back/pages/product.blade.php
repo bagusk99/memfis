@@ -20,3 +20,11 @@
 	</div>
 </div>
 @endsection
+
+@push('scripts')
+<script charset="utf-8">
+	$(document).ready(function() {
+		$('table').DataTable();
+	})
+</script>
+@endpush

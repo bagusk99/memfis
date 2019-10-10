@@ -18,6 +18,7 @@ class CreateProductsTable extends Migration
             $table->char('uuid', 36);
 
             $table->string('name');
+            $table->integer('price');
             $table->string('description');
 
             $table->timestamps();

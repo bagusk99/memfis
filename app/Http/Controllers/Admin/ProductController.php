@@ -4,9 +4,16 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Product;
+use Datatables;
 
 class ProductController extends Controller
 {
+	function datatable()
+	{
+		return Datatables::collection(Product::all())->make(true);
+	}
+	
     /**
      * Display a listing of the resource.
      *

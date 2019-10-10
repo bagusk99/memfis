@@ -76,6 +76,7 @@
   </div>
 
 	@include('back.modules.script')
+	@stack('scripts')
 </body>
 
 </html>

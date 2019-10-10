@@ -15,12 +15,22 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
+            $table->char('uuid', 36);
+            $table->bigInteger('roles_id')->unsigned();
+
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+
+			$table
+			->foreign('roles_id')
+			->references('id')
+			->on('roles')
+			->onDelete('restrict')
+			->onUpdate('restrict');
+
             $table->rememberToken();
             $table->timestamps();
+			$table->softDeletes();
         });
     }
 

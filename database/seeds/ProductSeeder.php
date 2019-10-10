@@ -11,7 +11,7 @@ class ProductSeeder extends Seeder
     {
 		$faker = Faker::create('id_ID');
 
-		for ($i = 0; $i < 15; $i++) {
+		for ($i = 0; $i < 50; $i++) {
 			Product::create([
 				'uuid' => Str::uuid()->toString(),
 				'price' => $faker->randomNumber(4),

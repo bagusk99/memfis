@@ -11,7 +11,7 @@ class ProductController extends Controller
 {
 	function datatable()
 	{
-		return Datatables::collection(Product::all())->make(true);
+		return Datatables::collection(Product::all())->make();
 	}
 	
     /**

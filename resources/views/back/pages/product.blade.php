@@ -9,8 +9,10 @@
 				<table class="table table-bordered table-striped table-hover">
 					<thead>
 						<tr>
-							<th>No</th>
-							<th>Nama</th>
+							<th></th>
+							<th>Name</th>
+							<th>Price</th>
+							<th>Description</th>
 						</tr>
 					</thead>
 				</table>
@@ -24,7 +26,17 @@
 @push('scripts')
 <script charset="utf-8">
 	$(document).ready(function() {
-		$('table').DataTable();
+		$('table').DataTable({
+			processing: true,
+			serverSide: true,
+			ajax: `{{ route('product.datatable') }}`,
+			columns: [
+				{data: 'id', name: 'id', searchable: false, visible: false },
+				{data: 'name', name: 'name'},
+				{data: 'price_sell', name: 'price_sell'},
+				{data: 'description', name: 'description'},
+			]
+		});
 	})
 </script>
 @endpush

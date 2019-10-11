@@ -5,17 +5,18 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use App\Models\Product;
+use App\Models\User;
+use App\Models\Customer;
 use Datatables;
 use Validator;
 use Hash;
 
-class ProductController extends Controller
+class CustomerController extends Controller
 {
 	function datatable()
 	{
 		return Datatables::collection(
-			Product::all()
+			Customer::with('user')->get()
 		)->make();
 	}
 
@@ -26,7 +27,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-		return view('back.pages.product.index');
+		return view('back.pages.customer.index');
     }
 
     /**
@@ -36,8 +37,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-		$d['action'] = route('product.store');
-		return view('back.pages.product.form', $d);
+		$d['action'] = route('customer.store');
+		return view('back.pages.customer.form', $d);
     }
 
     /**
@@ -51,8 +52,7 @@ class ProductController extends Controller
 	{
 		$rule = [
 			'name' => 'required|max:30',
-			'price' => 'required',
-			'description' => 'required',
+			'email' => 'required|email',
 		];
 
 		if ($request->rule) {
@@ -67,25 +67,28 @@ class ProductController extends Controller
     {
 		$request->request->add([
 			'rule' => [
-				'photo' => 'required|mimes:jpg,png,jpeg'
+				'password' => 'required|min:8',
+				'retypePassword' => 'required|min:8|same:password',
 			]
 		]);
 
 		$this->valid($request);
 
 		try {
-			$request->request->add([
-				'uuid' => Str::uuid()->toString()
+			$user = User::create([
+				'uuid' => Str::uuid()->toString(), 
+				'roles_id' => 1, 
+				'email' => $request->email, 
+				'password' => Hash::make($request->retypePassword), 
 			]);
 
-			Product::create($request->only([
-				'uuid',
-				'name',
-				'price',
-				'description',
-			]));
+			Customer::create([
+				'uuid' => Str::uuid()->toString(), 
+				'users_id' => $user->id,
+				'name' => $request->name, 
+			]);
 
-			return redirect()->route('product.index')->with([
+			return redirect()->route('customer.index')->with([
 				'success' => 'Data Saved'
 			]);
 		} catch (\Exception $e) {
@@ -115,9 +118,9 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-		$d['data'] = Product::find($id);
-		$d['action'] = route('product.update', $id);
-		return view('back.pages.product.form', $d);
+		$d['data'] = Customer::find($id);
+		$d['action'] = route('customer.update', $id);
+		return view('back.pages.customer.form', $d);
     }
 
     /**
@@ -129,7 +132,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-		$product = Product::find($id);
+		$customer = Customer::find($id);
 
 		$this->valid($request);
 
@@ -152,15 +155,15 @@ class ProductController extends Controller
 			array_push($field, 'password');
 		}
 
-		Product::where('id', $id)->update([
+		Customer::where('id', $id)->update([
 			'name' => $request->name
 		]);
 
 		try {
-			User::where('id', $product->users_id)
+			User::where('id', $customer->users_id)
 				->update($request->only($field));
 			
-			return redirect()->route('product.index')->with([
+			return redirect()->route('customer.index')->with([
 				'success' => 'Data Changed'
 			]);
 		} catch (\Exception $e) {
@@ -178,8 +181,9 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-		$product = Product::find($id);
-		$product->delete();
+		$customer = Customer::find($id);
+		$customer->delete();
+		User::destroy($customer->users_id);
 
 		return redirect()->back()->with([ 'success' => 'Data Deleted' ]);
     }

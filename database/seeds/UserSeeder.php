@@ -20,5 +20,14 @@ class UserSeeder extends Seeder
 				'password' => Hash::make('123qweasd'),
 			]);
 		}
+
+		for ($i = 30; $i < 50; $i++) {
+			User::create([
+				'uuid' => Str::uuid()->toString(),
+				'roles_id' => 2,
+				'email' => $faker->email,
+				'password' => Hash::make('123qweasd'),
+			]);
+		}
     }
 }

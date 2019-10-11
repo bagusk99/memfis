@@ -15,8 +15,8 @@ class CreateCustomersTable extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('users_id')->unsigned();
             $table->char('uuid', 36);
+            $table->bigInteger('users_id')->unsigned();
 
 			$table->string('name');
 
@@ -24,8 +24,8 @@ class CreateCustomersTable extends Migration
 			->foreign('users_id')
 			->references('id')
 			->on('users')
-			->onDelete('restrict')
-			->onUpdate('restrict');
+			->onDelete('cascade')
+			->onUpdate('cascade');
 
             $table->timestamps();
 			$table->softDeletes();

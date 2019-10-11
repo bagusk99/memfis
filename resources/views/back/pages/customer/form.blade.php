@@ -32,22 +32,22 @@
 							
 							<div class="form-group">
 								<label>Name</label>
-								<input type="text" class="form-control" value="" name="name" id=""/>
+								<input type="text" class="form-control" value="{{ ($v = @$data->name)? $v: old('name') }}" name="name" id=""/>
 							</div>
 							<div class="form-group">
-								<label>Price</label>
-								<input type="text" class="form-control" value="" name="price" id=""/>
+								<label>Email</label>
+								<input type="text" class="form-control" value="{{ ($v = @$data->user->email)? $v: old('email') }}" name="email" id=""/>
 							</div>
 							<div class="form-group">
-								<label>Description</label>
-								<textarea name="description" id="" class="form-control"></textarea>
+								<label>Password</label>
+								<input type="password" class="form-control" value="" name="password" id=""/>
 							</div>
 							<div class="form-group">
-								<label class="w-100">Photo</label>
-								<input type="file" value="" name="photo" id=""/>
+								<label>Retype Password</label>
+								<input type="password" class="form-control" value="" name="retypePassword" id=""/>
 							</div>
 							<div class="form-group text-right">
-								<a href="{{ route('product.index') }}" class="btn btn-sm btn-danger text-light">Cancel</a>
+								<a href="{{ route('customer.index') }}" class="btn btn-sm btn-danger text-light">Cancel</a>
 								<button class="btn btn-sm btn-success">Save</button>
 							</div>
 

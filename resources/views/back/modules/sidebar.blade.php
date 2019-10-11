@@ -34,7 +34,7 @@
 		</a>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link" href="javascript:;">
+		<a class="nav-link" href="{{ route('customer.index') }}">
 			<i class="fa fa-fw fa-users"></i>
 			<span>Customer</span>
 		</a>

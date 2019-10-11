@@ -67,7 +67,8 @@ class ProductController extends Controller
     {
 		$request->request->add([
 			'rule' => [
-				'photo' => 'required|mimes:jpg,png,jpeg'
+				'photo' => 'required',                                                        
+				'photo.*' => 'image|mimes:jpeg,png,jpg|max:2048',
 			]
 		]);
 

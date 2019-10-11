@@ -44,7 +44,7 @@
 							</div>
 							<div class="form-group">
 								<label class="w-100">Photo</label>
-								<input type="file" value="" name="photo" id=""/>
+								<input type="file" value="" name="photo[]" id="" multiple accept="image/png, image/jpeg, image/jpg"/>
 							</div>
 							<div class="form-group text-right">
 								<a href="{{ route('product.index') }}" class="btn btn-sm btn-danger text-light">Cancel</a>

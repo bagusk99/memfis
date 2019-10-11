@@ -15,3 +15,8 @@
 
 <!-- Custom styles for this page -->
 <link href="{{ asset('assets/back') }}/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+<style type="text/css" media="screen">
+.nowrap{
+	white-space : nowrap
+}
+</style>

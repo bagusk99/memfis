@@ -17,7 +17,6 @@ class Product extends Model
 
 	public function getPriceSellAttribute()
 	{
-		return number_format($this->price, 0, 0, '.');
+		return 'Rp '.number_format($this->price, 0, 0, '.');
 	}
-	
 }

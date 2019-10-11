@@ -4,16 +4,16 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Product;
+use App\Models\Employee;
 use Datatables;
 
-class ProductController extends Controller
+class EmployeeController extends Controller
 {
 	function datatable()
 	{
-		return Datatables::collection(Product::all())->make();
+		return Datatables::collection(Employee::all())->make();
 	}
-	
+
     /**
      * Display a listing of the resource.
      *
@@ -21,7 +21,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-		return view('back.pages.product.index');
+		return view('back.pages.employee.index');
     }
 
     /**
@@ -31,7 +31,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-		return view('back.pages.product.form');
+		return view('back.pages.employee.form');
     }
 
     /**

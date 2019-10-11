@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Employee;
 use Datatables;
 use Validator;
+use Hash;
 
 class EmployeeController extends Controller
 {
@@ -51,7 +52,7 @@ class EmployeeController extends Controller
 	{
 		$rule = [
 			'name' => 'required|max:30',
-			'email' => 'required|email|unique:users,email',
+			'email' => 'required|email',
 		];
 
 		if ($request->rule) {
@@ -73,22 +74,29 @@ class EmployeeController extends Controller
 
 		$this->valid($request);
 
-		$user = User::create([
-			'uuid' => Str::uuid()->toString(), 
-			'roles_id' => 1, 
-			'email' => $request->email, 
-			'password' => $request->retypePassword, 
-		]);
+		try {
+			$user = User::create([
+				'uuid' => Str::uuid()->toString(), 
+				'roles_id' => 1, 
+				'email' => $request->email, 
+				'password' => Hash::make($request->retypePassword), 
+			]);
 
-		Employee::create([
-			'uuid' => Str::uuid()->toString(), 
-			'users_id' => $user->id,
-			'name' => $request->name, 
-		]);
+			Employee::create([
+				'uuid' => Str::uuid()->toString(), 
+				'users_id' => $user->id,
+				'name' => $request->name, 
+			]);
 
-		return redirect()->route('employee.index')->with([
-			'success' => 'Data Saved'
-		]);
+			return redirect()->route('employee.index')->with([
+				'success' => 'Data Saved'
+			]);
+		} catch (\Exception $e) {
+			return redirect()->back()->with([
+				'error' => $e->errorInfo[2]
+			]);
+		}
+
     }
 
     /**
@@ -124,7 +132,45 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, $id)
     {
+		$employee = Employee::find($id);
+
 		$this->valid($request);
+
+		$field = ['email'];
+
+		//check if password filled
+		if ($request->password) {
+
+			$request->request->add([
+				'rule' => [
+					'password' => 'required|min:8',
+					'retypePassword' => 'required|min:8|same:password',
+				]
+			]);
+
+			$this->valid($request);
+
+			$request->merge(['password' => Hash::make($request->password)]);
+
+			array_push($field, 'password');
+		}
+
+		Employee::where('id', $id)->update([
+			'name' => $request->name
+		]);
+
+		try {
+			User::where('id', $employee->users_id)
+				->update($request->only($field));
+			
+			return redirect()->route('employee.index')->with([
+				'success' => 'Data Changed'
+			]);
+		} catch (\Exception $e) {
+			return redirect()->back()->with([
+				'error' => $e->errorInfo[2]
+			]);
+		}
     }
 
     /**
@@ -135,7 +181,9 @@ class EmployeeController extends Controller
      */
     public function destroy($id)
     {
-		Employee::destroy($id);
+		$employee = Employee::find($id);
+		$employee->delete();
+		User::destroy($employee->users_id);
 
 		return redirect()->back()->with([ 'success' => 'Data Deleted' ]);
     }

@@ -18,7 +18,7 @@
 					</a>
 				</div>
 
-				<table class="table table-bordered table-striped table-hover">
+				<table class="table table-bordered table-hover">
 					<thead>
 						<tr>
 							<th></th>
@@ -42,6 +42,7 @@
 			processing: true,
 			serverSide: true,
 			ajax: `{{ route('employee.datatable') }}`,
+			order: [[0, 'desc']],
 			columns: [
 				{data: 'id', name: 'id', searchable: false, visible: false },
 				{data: 'name', name: 'name'},

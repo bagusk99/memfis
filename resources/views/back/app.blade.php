@@ -29,6 +29,10 @@
 
           <!-- Content Row -->
 					@yield('content')
+					<form action="" method="post" id="form-delete">
+						@csrf
+						@method('DELETE')
+					</form>
         </div>
         <!-- /.container-fluid -->
 

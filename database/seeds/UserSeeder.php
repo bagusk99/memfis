@@ -1,10 +1,10 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Models\User;
 use Illuminate\Support\Str;
-use Faker\Factory as Faker;
 use Illuminate\Support\Facades\Hash;
+use Faker\Factory as Faker;
+use App\Models\User;
 
 class UserSeeder extends Seeder
 {

@@ -11,12 +11,15 @@
 |
 */
 
-Route::prefix('admin/employee')
-	->name('employee.')
+Route::prefix('admin')
 	->namespace('Admin')
 	->group(function() {
-		Route::get('datatable', 'EmployeeController@datatable')
-			->name('datatable');
-		Route::resource('', 'EmployeeController');
+		Route::get('employee/datatable', 'EmployeeController@datatable')
+			->name('employee.datatable');
+		Route::get('employee/edit/{employee}', 'EmployeeController@edit')
+			->name('employee.edit');
+		Route::resource('employee', 'EmployeeController')->except([
+			'edit'
+		]);
 	});
 

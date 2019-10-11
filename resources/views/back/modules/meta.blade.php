@@ -19,4 +19,8 @@
 .nowrap{
 	white-space : nowrap
 }
+
+.width-1{
+	width: 1px
+}
 </style>

@@ -11,12 +11,11 @@
 |
 */
 
-Route::prefix('admin/product')
-	->name('product.')
+Route::prefix('admin')
 	->namespace('Admin')
 	->group(function() {
-		Route::get('datatable', 'ProductController@datatable')
-			->name('datatable');
-		Route::resource('', 'ProductController');
+		Route::get('product/datatable', 'ProductController@datatable')
+			->name('product.datatable');
+		Route::resource('product', 'ProductController');
 	});
 

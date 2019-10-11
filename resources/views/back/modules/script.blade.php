@@ -27,5 +27,13 @@
 			}
 		}
 
+		// delete handler
+		$('body').on('click', '.btn-delete', function() {
+			var url = $(this).data('url');
+			var form = $('form#form-delete');
+
+			form.attr('action', url);
+			form.submit();
+		})
 	})
 </script>

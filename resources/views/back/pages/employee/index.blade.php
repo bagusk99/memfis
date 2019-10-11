@@ -18,8 +18,6 @@
 						<tr>
 							<th></th>
 							<th>Name</th>
-							<th class="nowrap text-center">Price</th>
-							<th>Description</th>
 							<th class="nowrap text-center">Action</th>
 						</tr>
 					</thead>
@@ -41,8 +39,6 @@
 			columns: [
 				{data: 'id', name: 'id', searchable: false, visible: false },
 				{data: 'name', name: 'name'},
-				{data: 'price_sell', name: 'price_sell', className: 'nowrap'},
-				{data: 'description', name: 'description'},
 				{
 					data: 'id',
 					orderable: false,

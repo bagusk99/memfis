@@ -40,7 +40,7 @@
 		</a>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link" href="javascript:;">
+		<a class="nav-link" href="{{ route('employee.index') }}">
 			<i class="fa fa-fw fa-user-circle"></i>
 			<span>Employee</span>
 		</a>

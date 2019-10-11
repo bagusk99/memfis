@@ -59,8 +59,6 @@ class EmployeeController extends Controller
 			unset($request['rule']);
 		}
 
-		dd($rule);
-
 		Validator::make($request->all(), $rule)->validate();
 	}
 	

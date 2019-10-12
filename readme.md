@@ -2,7 +2,9 @@
 2. please run **composer install**
 3. and then copy the .env.example to .env
 4. run **php artisan key:generate**
-5. run **php artisan migrate --seed**
+5. create a database
+6. setting up your database credential in .env
+7. run **php artisan migrate --seed**
 
 **note**
 1. This application tested on mysql

@@ -8,7 +8,7 @@
 			<ul class="navbar-nav ml-auto">
 				@if (Auth::check())
 					<li class="nav-item active text-light">
-						<a class="nav-link" href="javascript:;">Hai {{ Auth::user()->customer->name }}</a>
+						<a class="nav-link" href="javascript:;">Hai {{ @Auth::user()->customer->name }}</a>
 					</li>
 					<li class="nav-item active text-light">
 						<a class="nav-link" href="{{ route('auth.logout') }}">Logout</a>

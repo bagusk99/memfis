@@ -38,6 +38,7 @@
 			processing: true,
 			serverSide: true,
 			ajax: `{{ route('product.datatable') }}`,
+			order: [[0, 'desc']],
 			columns: [
 				{data: 'id', name: 'id', searchable: false, visible: false },
 				{data: 'name', name: 'name'},
@@ -49,10 +50,10 @@
 					className: '',
 					render: function(data) {
 						var html =
-							`<button type="button" data-toggle="tooltip" data-placement="top" title="Ubah" class="btn btn-sm nowrap mb-1 btn-icon btn-clean">
+							`<a href="{{ route('product.edit', '') }}/${data}" class="btn btn-sm nowrap mb-1 btn-icon btn-clean">
 								<i class="fa fa-edit fa-fw"></i>
-							</button>
-							<button type="button" data-toggle="tooltip" data-placement="top" title="Hapus" class="text-danger btn btn-sm nowrap mb-1 btn-icon btn-clean">
+							</a>
+							<button data-url="{{ route('product.destroy', '') }}/${data}" class="text-danger btn btn-sm nowrap mb-1 btn-icon btn-clean btn-delete">
 								<i class="fa fa-trash fa-fw"></i>
 							</button>`
 

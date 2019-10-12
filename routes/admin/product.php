@@ -16,6 +16,10 @@ Route::prefix('admin')
 	->group(function() {
 		Route::get('product/datatable', 'ProductController@datatable')
 			->name('product.datatable');
-		Route::resource('product', 'ProductController');
+		Route::get('product/edit/{product}', 'ProductController@edit')
+			->name('product.edit');
+		Route::resource('product', 'ProductController')->except([
+			'edit'
+		]);
 	});
 

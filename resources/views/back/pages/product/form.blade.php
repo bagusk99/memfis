@@ -32,19 +32,19 @@
 							
 							<div class="form-group">
 								<label>Name</label>
-								<input type="text" class="form-control" value="" name="name" id=""/>
+								<input type="text" class="form-control" value="{{ ($v = @$data->name)? $v: old('name') }}" name="name" id=""/>
 							</div>
 							<div class="form-group">
 								<label>Price</label>
-								<input type="text" class="form-control" value="" name="price" id=""/>
+								<input type="text" class="form-control" value="{{ ($v = @$data->price)? $v: old('price') }}" name="price" id=""/>
 							</div>
 							<div class="form-group">
 								<label>Description</label>
-								<textarea name="description" id="" class="form-control"></textarea>
+								<textarea name="description" id="" class="form-control">{{ ($v = @$data->description)? $v: old('description') }}</textarea>
 							</div>
 							<div class="form-group">
 								<label class="w-100">Photo</label>
-								<input type="file" value="" name="photo[]" id="" multiple accept="image/png, image/jpeg, image/jpg"/>
+								<input type="file" value="" name="product_photo" id="" accept="image/png, image/jpeg, image/jpg"/>
 							</div>
 							<div class="form-group text-right">
 								<a href="{{ route('product.index') }}" class="btn btn-sm btn-danger text-light">Cancel</a>

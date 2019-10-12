@@ -14,8 +14,9 @@ class ProductSeeder extends Seeder
 		for ($i = 0; $i < 50; $i++) {
 			Product::create([
 				'uuid' => Str::uuid()->toString(),
-				'price' => $faker->randomNumber(4),
 				'name' => $faker->colorName,
+				'price' => $faker->randomNumber(4),
+				'photo' => '/assets/img/default.jpg',
 				'description' => $faker->text,
 			]);
 		}

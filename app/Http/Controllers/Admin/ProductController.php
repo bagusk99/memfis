@@ -53,6 +53,7 @@ class ProductController extends Controller
 			'name' => 'required|max:30',
 			'price' => 'required',
 			'description' => 'required',
+			'product_photo' => 'image|mimes:jpeg,png,jpg|max:2048',
 		];
 
 		if ($request->rule) {
@@ -67,8 +68,7 @@ class ProductController extends Controller
     {
 		$request->request->add([
 			'rule' => [
-				'photo' => 'required',                                                        
-				'photo.*' => 'image|mimes:jpeg,png,jpg|max:2048',
+				'product_photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
 			]
 		]);
 
@@ -79,10 +79,17 @@ class ProductController extends Controller
 				'uuid' => Str::uuid()->toString()
 			]);
 
+			$upload = $request->file('product_photo')->store('assets/img');
+
+			$request->request->add([
+				'photo' => '/'.$upload
+			]);
+
 			Product::create($request->only([
 				'uuid',
 				'name',
 				'price',
+				'photo',
 				'description',
 			]));
 
@@ -134,41 +141,42 @@ class ProductController extends Controller
 
 		$this->valid($request);
 
-		$field = ['email'];
+		$field = [
+			'uuid',
+			'name',
+			'price',
+			'description',
+		];
 
-		//check if password filled
-		if ($request->password) {
-
+		if ($request->product_photo) {
 			$request->request->add([
 				'rule' => [
-					'password' => 'required|min:8',
-					'retypePassword' => 'required|min:8|same:password',
+					'product_photo' =>
+				   	'required|image|mimes:jpeg,png,jpg|max:2048',
 				]
 			]);
 
 			$this->valid($request);
 
-			$request->merge(['password' => Hash::make($request->password)]);
+			$upload = $request->file('product_photo')->store('assets/img');
 
-			array_push($field, 'password');
+			if ($product->photo != '/assets/img/default.jpg') {
+				@unlink(public_path().$product->photo);
+			}
+
+			array_push($field, 'photo');
+
+			$request->request->add([
+				'photo' => '/'.$upload
+			]);
 		}
 
-		Product::where('id', $id)->update([
-			'name' => $request->name
+		Product::where('id', $id)
+			->update($request->only($field));
+
+		return redirect()->route('product.index')->with([
+			'success' => 'Data Changed'
 		]);
-
-		try {
-			User::where('id', $product->users_id)
-				->update($request->only($field));
-			
-			return redirect()->route('product.index')->with([
-				'success' => 'Data Changed'
-			]);
-		} catch (\Exception $e) {
-			return redirect()->back()->with([
-				'error' => $e->errorInfo[2]
-			]);
-		}
     }
 
     /**
@@ -181,6 +189,10 @@ class ProductController extends Controller
     {
 		$product = Product::find($id);
 		$product->delete();
+
+		if ($product->photo != '/assets/img/default.jpg') {
+			@unlink(public_path().$product->photo);
+		}
 
 		return redirect()->back()->with([ 'success' => 'Data Deleted' ]);
     }

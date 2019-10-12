@@ -10,6 +10,7 @@ class Product extends Model
 		'uuid',
 		'name',
 		'price',
+		'photo',
 		'description',
 	];
 

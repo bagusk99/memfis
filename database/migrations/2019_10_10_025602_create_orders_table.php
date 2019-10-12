@@ -19,6 +19,7 @@ class CreateOrdersTable extends Migration
             $table->bigInteger('employees_id')->unsigned();
             $table->bigInteger('customers_id')->unsigned();
             $table->bigInteger('products_id')->unsigned();
+            $table->bigInteger('total');
 
 			$table
 			->foreign('employees_id')

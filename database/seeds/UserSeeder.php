@@ -29,5 +29,12 @@ class UserSeeder extends Seeder
 				'password' => Hash::make('123qweasd'),
 			]);
 		}
+
+		User::create([
+			'uuid' => Str::uuid()->toString(),
+			'roles_id' => 3,
+			'email' => 'admin@admin.com',
+			'password' => Hash::make('123qweasd'),
+		]);
     }
 }

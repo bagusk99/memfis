@@ -18,5 +18,11 @@ class EmployeeSeeder extends Seeder
 				'name' => $faker->name,
 			]);
 		}
+
+		Employee::create([
+			'users_id' => 51,
+			'uuid' => Str::uuid()->toString(),
+			'name' => 'Admin',
+		]);
     }
 }

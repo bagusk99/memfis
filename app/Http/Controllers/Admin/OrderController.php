@@ -5,20 +5,24 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use App\Models\User;
+use App\Models\Order;
 use App\Models\Employee;
+use App\Models\Customer;
+use App\Models\Product;
 use Datatables;
 use Validator;
 use Hash;
 
-class EmployeeController extends Controller
+class OrderController extends Controller
 {
 	function datatable()
 	{
 		return Datatables::collection(
-			Employee::with('user')
-				->where('name', '!=', 'Admin')
-				->get()
+			Order::with([
+				'employee',
+				'customer',
+				'product',
+			])->get()
 		)->make();
 	}
 
@@ -29,7 +33,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-		return view('back.pages.employee.index');
+		return view('back.pages.order.index');
     }
 
     /**
@@ -39,8 +43,14 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-		$d['action'] = route('employee.store');
-		return view('back.pages.employee.form', $d);
+		$d['action'] = route('order.store');
+
+		$d['employee'] = Employee::orderBy('id', 'DESC')
+			->where('name', '!=', 'Admin')->get();
+		$d['customer'] = Customer::orderBy('id', 'DESC')->get();
+		$d['product'] = Product::orderBy('id', 'DESC')->get();
+
+		return view('back.pages.order.form', $d);
     }
 
     /**
@@ -53,8 +63,10 @@ class EmployeeController extends Controller
 	function valid($request)
 	{
 		$rule = [
-			'name' => 'required|max:30',
-			'email' => 'required|email',
+			'employees_id' => 'required|numeric',
+			'customers_id' => 'required|numeric',
+			'products_id' => 'required|numeric',
+			'total' => 'required|numeric',
 		];
 
 		if ($request->rule) {
@@ -67,30 +79,22 @@ class EmployeeController extends Controller
 	
     public function store(Request $request)
     {
-		$request->request->add([
-			'rule' => [
-				'password' => 'required|min:8',
-				'retypePassword' => 'required|min:8|same:password',
-			]
-		]);
-
 		$this->valid($request);
 
 		try {
-			$user = User::create([
-				'uuid' => Str::uuid()->toString(), 
-				'roles_id' => 1, 
-				'email' => $request->email, 
-				'password' => Hash::make($request->retypePassword), 
+			$request->request->add([
+				'uuid' => Str::uuid()->toString()
 			]);
 
-			Employee::create([
-				'uuid' => Str::uuid()->toString(), 
-				'users_id' => $user->id,
-				'name' => $request->name, 
-			]);
+			Order::create($request->only([
+				'uuid',
+				'employees_id',
+				'customers_id',
+				'products_id',
+				'total',
+			]));
 
-			return redirect()->route('employee.index')->with([
+			return redirect()->route('order.index')->with([
 				'success' => 'Data Saved'
 			]);
 		} catch (\Exception $e) {
@@ -120,9 +124,16 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
-		$d['data'] = Employee::find($id);
-		$d['action'] = route('employee.update', $id);
-		return view('back.pages.employee.form', $d);
+		$d['data'] = Order::find($id);
+		$d['action'] = route('order.update', $id);
+
+
+		$d['employee'] = Employee::orderBy('id', 'DESC')
+			->where('name', '!=', 'Admin')->get();
+		$d['customer'] = Customer::orderBy('id', 'DESC')->get();
+		$d['product'] = Product::orderBy('id', 'DESC')->get();
+
+		return view('back.pages.order.form', $d);
     }
 
     /**
@@ -134,45 +145,22 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, $id)
     {
-		$employee = Employee::find($id);
-
 		$this->valid($request);
 
-		$field = ['email'];
+		$field = [
+			'uuid',
+			'employees_id',
+			'customers_id',
+			'products_id',
+			'total',
+		];
 
-		//check if password filled
-		if ($request->password) {
+		Order::where('id', $id)
+			->update($request->only($field));
 
-			$request->request->add([
-				'rule' => [
-					'password' => 'required|min:8',
-					'retypePassword' => 'required|min:8|same:password',
-				]
-			]);
-
-			$this->valid($request);
-
-			$request->merge(['password' => Hash::make($request->password)]);
-
-			array_push($field, 'password');
-		}
-
-		Employee::where('id', $id)->update([
-			'name' => $request->name
+		return redirect()->route('order.index')->with([
+			'success' => 'Data Changed'
 		]);
-
-		try {
-			User::where('id', $employee->users_id)
-				->update($request->only($field));
-			
-			return redirect()->route('employee.index')->with([
-				'success' => 'Data Changed'
-			]);
-		} catch (\Exception $e) {
-			return redirect()->back()->with([
-				'error' => $e->errorInfo[2]
-			]);
-		}
     }
 
     /**
@@ -183,9 +171,8 @@ class EmployeeController extends Controller
      */
     public function destroy($id)
     {
-		$employee = Employee::find($id);
-		$employee->delete();
-		User::destroy($employee->users_id);
+		$order = Order::find($id);
+		$order->delete();
 
 		return redirect()->back()->with([ 'success' => 'Data Deleted' ]);
     }

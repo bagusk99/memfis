@@ -13,13 +13,13 @@
 
 Route::prefix('admin')
 	->namespace('Admin')
-	->middleware('super')
+	->middleware('employee')
 	->group(function() {
-		Route::get('customer/datatable', 'CustomerController@datatable')
-			->name('customer.datatable');
-		Route::get('customer/edit/{customer}', 'CustomerController@edit')
-			->name('customer.edit');
-		Route::resource('customer', 'CustomerController')->except([
+		Route::get('order/datatable', 'OrderController@datatable')
+			->name('order.datatable');
+		Route::get('order/edit/{order}', 'OrderController@edit')
+			->name('order.edit');
+		Route::resource('order', 'OrderController')->except([
 			'edit'
 		]);
 	});

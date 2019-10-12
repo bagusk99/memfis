@@ -34,17 +34,25 @@
 		</a>
 	</li>
 	<li class="nav-item">
-		<a class="nav-link" href="{{ route('customer.index') }}">
-			<i class="fa fa-fw fa-users"></i>
-			<span>Customer</span>
+		<a class="nav-link" href="{{ route('order.index') }}">
+			<i class="fa fa-fw fa-boxes"></i>
+			<span>Order</span>
 		</a>
 	</li>
-	<li class="nav-item">
-		<a class="nav-link" href="{{ route('employee.index') }}">
-			<i class="fa fa-fw fa-user-circle"></i>
-			<span>Employee</span>
-		</a>
-	</li>
+	@if (Auth::user()->roles_id == 3)
+		<li class="nav-item">
+			<a class="nav-link" href="{{ route('customer.index') }}">
+				<i class="fa fa-fw fa-users"></i>
+				<span>Customer</span>
+			</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="{{ route('employee.index') }}">
+				<i class="fa fa-fw fa-user-circle"></i>
+				<span>Employee</span>
+			</a>
+		</li>
+	@endif
 
 	<!-- Divider -->
 	<hr class="sidebar-divider d-none d-md-block">

@@ -10,7 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::middleware('customer')->group(function() {
 
-Route::get('/', function () {
-    return view('front/app');
 });
+
+Route::get('/', 'AppController@index')->name('/');
+Route::get('/product/{id}', 'AppController@product')->name('product');

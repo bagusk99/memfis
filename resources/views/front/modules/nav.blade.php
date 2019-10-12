@@ -6,12 +6,21 @@
 		</button>
 		<div class="collapse navbar-collapse" id="navbarResponsive">
 			<ul class="navbar-nav ml-auto">
-				<li class="nav-item active">
-					<a class="nav-link" href="#">Masuk</a>
-				</li>
-				<li class="nav-item active">
-					<a class="nav-link" href="#">Daftar</a>
-				</li>
+				@if (Auth::check())
+					<li class="nav-item active text-light">
+						<a class="nav-link" href="javascript:;">Hai {{ Auth::user()->customer->name }}</a>
+					</li>
+					<li class="nav-item active text-light">
+						<a class="nav-link" href="{{ route('auth.logout') }}">Logout</a>
+					</li>
+				@else
+					<li class="nav-item active">
+						<a class="nav-link" href="{{ route('auth.login') }}">Login</a>
+					</li>
+					<li class="nav-item active">
+						<a class="nav-link" href="{{ route('auth.register') }}">Register</a>
+					</li>
+				@endif
 			</ul>
 		</div>
 	</div>

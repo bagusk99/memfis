@@ -13,6 +13,7 @@
 
 Route::prefix('admin')
 	->namespace('Admin')
+	->middleware('super')
 	->group(function() {
 		Route::get('employee/datatable', 'EmployeeController@datatable')
 			->name('employee.datatable');

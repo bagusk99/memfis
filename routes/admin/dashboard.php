@@ -14,6 +14,7 @@
 Route::prefix('admin/dashboard')
 	->name('dashboard.')
 	->namespace('Admin')
+	->middleware('employee')
 	->group(function() {
 		Route::get('', 'DashboardController@index')->name('index');
 	});

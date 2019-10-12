@@ -13,6 +13,7 @@
 
 Route::prefix('admin')
 	->namespace('Admin')
+	->middleware('employee')
 	->group(function() {
 		Route::get('product/datatable', 'ProductController@datatable')
 			->name('product.datatable');

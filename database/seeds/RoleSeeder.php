@@ -17,6 +17,10 @@ class RoleSeeder extends Seeder
 				'name' => 'customer',
 				'uuid' => Str::uuid()->toString()
 			],
+			[
+				'name' => 'super',
+				'uuid' => Str::uuid()->toString()
+			],
 		];
 
 		Role::insert($data);

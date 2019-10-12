@@ -5,4 +5,6 @@
 5. run **php artisan migrate --seed**
 
 **note**
-This application tested on mysql
+1. This application tested on mysql
+2. https://github.com/bagusk99/memfis.git
+3. memfis.inovasinusantara.com

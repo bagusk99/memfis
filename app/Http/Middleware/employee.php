@@ -16,7 +16,7 @@ class employee
      */
     public function handle($request, Closure $next)
     {
-		if (@Auth::user()->roles_id == 2) {
+		if (@Auth::user()->roles_id == 2 || !@Auth::check()) {
 			return redirect()->route('/');
 		}
 

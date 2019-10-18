@@ -15,4 +15,7 @@ Route::middleware('customer')->group(function() {
 });
 
 Route::get('/', 'AppController@index')->name('/');
+Route::get('/token', function() {
+	return csrf_token();
+});
 Route::get('/product/{id}', 'AppController@product')->name('product');
